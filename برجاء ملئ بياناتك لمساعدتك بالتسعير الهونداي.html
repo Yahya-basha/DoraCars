@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>طلب تسعير قطع غيار - درة السيارة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            direction: rtl;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, select, textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0F245D;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #09203F;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>طلب تسعير قطع غيار سيارات الهونداي</h2>
+    <p>املأ البيانات التالية وسنتواصل معك فورًا على واتساب!</p>
+
+    <form id="pricingForm">
+        <input type="text" id="name" placeholder="اسمك" required>
+        <input type="tel" id="phone" placeholder="رقم الجوال" required>
+        <input type="text" id="carModel" placeholder="موديل السيارة (مثال: سوناتا)" required>
+        <input type="text" id="carYear" placeholder="سنة الصنع (مثال: 2020)" required>
+        <input type="text" id="vinNumber" placeholder="رقم الهيكل (VIN)" required>
+        <textarea id="partDetails" placeholder="اكتب تفاصيل القطعة المطلوبة..." required></textarea>
+        <input type="file" id="carDoc" accept="image/*">
+        <button type="button" onclick="sendToWhatsApp()">إرسال الطلب</button>
+    </form>
+
+    <script>
+        function sendToWhatsApp() {
+            var name = document.getElementById("name").value;
+            var phone = document.getElementById("phone").value;
+            var carModel = document.getElementById("carModel").value;
+            var carYear = document.getElementById("carYear").value;
+            var vinNumber = document.getElementById("vinNumber").value;
+            var partDetails = document.getElementById("partDetails").value;
+            var carDoc = document.getElementById("carDoc").files[0];
+
+            if(name && phone && carModel && carYear && vinNumber && partDetails) {
+                var message = `🚗 *طلب تسعير جديد قسم سيارات الهونداي!* 🚗\n\n👤 الاسم: ${name}\n📞 رقم الجوال: ${phone}\n🚘 موديل السيارة: ${carModel}\n📅 سنة الصنع: ${carYear}\n🔢 رقم الهيكل: ${vinNumber}\n🛠 تفاصيل القطعة: ${partDetails}`;
+                var whatsappURL = `https://wa.me/966530051360?text=${encodeURIComponent(message)}`;
+
+                if (carDoc) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        var imageData = event.target.result;
+                        var blob = new Blob([imageData], { type: "image/png" });
+                        var url = URL.createObjectURL(blob);
+                        window.open(whatsappURL, "_blank");
+                        window.open(url, "_blank"); // لفتح الصورة في نافذة جديدة
+                    };
+                    reader.readAsArrayBuffer(carDoc);
+                } else {
+                    window.open(whatsappURL, "_blank");
+                }
+            } else {
+                alert("يرجى تعبئة جميع الحقول قبل الإرسال.");
+            }
+        }
+    </script>
+
+</body>
+</html>
